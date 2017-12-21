@@ -40,4 +40,14 @@
         android:layout_height="wrap_content"
         android:text="获取ManyToMany"
         android:onClick="getManyToManyData"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Union产生"
+        android:onClick="genUnion"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Union使用"
+        android:onClick="doUnion"/>
 </LinearLayout>

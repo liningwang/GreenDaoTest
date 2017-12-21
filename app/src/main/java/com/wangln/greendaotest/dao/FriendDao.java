@@ -33,6 +33,7 @@ public class FriendDao extends AbstractDao<Friend, Long> {
     }
 
     private Query<Friend> people_FriendListQuery;
+    private Query<Friend> people1_FriendListQuery;
 
     public FriendDao(DaoConfig config) {
         super(config);
@@ -146,6 +147,20 @@ public class FriendDao extends AbstractDao<Friend, Long> {
             }
         }
         Query<Friend> query = people_FriendListQuery.forCurrentThread();
+        query.setParameter(0, peopleId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "friendList" to-many relationship of People1. */
+    public List<Friend> _queryPeople1_FriendList(long peopleId) {
+        synchronized (this) {
+            if (people1_FriendListQuery == null) {
+                QueryBuilder<Friend> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.PeopleId.eq(null));
+                people1_FriendListQuery = queryBuilder.build();
+            }
+        }
+        Query<Friend> query = people1_FriendListQuery.forCurrentThread();
         query.setParameter(0, peopleId);
         return query.list();
     }

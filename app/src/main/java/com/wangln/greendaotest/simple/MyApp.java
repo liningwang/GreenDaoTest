@@ -17,7 +17,7 @@ public class MyApp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        DaoMaster.OpenHelper helper = new MySqliteOpenHelper(this, "notes-db", null);
+        DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();

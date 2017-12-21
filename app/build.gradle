@@ -19,7 +19,7 @@ android {
     }
 }
 greendao {
-    schemaVersion 21
+    schemaVersion 24
     targetGenDir 'src/main/java'
     daoPackage 'com.wangln.greendaotest.dao'
 }

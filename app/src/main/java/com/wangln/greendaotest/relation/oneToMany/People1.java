@@ -1,22 +1,24 @@
 package com.wangln.greendaotest.relation.oneToMany;
 
+import com.wangln.greendaotest.dao.DaoSession;
+import com.wangln.greendaotest.dao.FriendDao;
+import com.wangln.greendaotest.dao.PeopleDao;
+
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.Date;
 import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
-import com.wangln.greendaotest.dao.DaoSession;
-import com.wangln.greendaotest.dao.FriendDao;
-import com.wangln.greendaotest.dao.PeopleDao;
+import com.wangln.greendaotest.dao.People1Dao;
 
 /**
  * Created by Administrator on 2017/11/20 0020.
  */
 @Entity
-public class People {
+public class People1 {
     @Id(autoincrement = true)
     private Long id;
     private String name;
@@ -27,30 +29,17 @@ public class People {
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
     /** Used for active entity operations. */
-    @Generated(hash = 465701119)
-    private transient PeopleDao myDao;
-    @Generated(hash = 1134824870)
-    public People(Long id, String name, Date createdTime) {
+    @Generated(hash = 1509775001)
+    private transient People1Dao myDao;
+    @Generated(hash = 668757155)
+    public People1(Long id, String name, Date createdTime) {
         this.id = id;
         this.name = name;
         this.createdTime = createdTime;
     }
-    @Generated(hash = 1406030881)
-    public People() {
+    @Generated(hash = 490280816)
+    public People1() {
     }
-
-    @Override
-    public String toString() {
-        return "People{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdTime=" + createdTime +
-                ", friendList=" + friendList +
-                ", daoSession=" + daoSession +
-                ", myDao=" + myDao +
-                '}';
-    }
-
     public Long getId() {
         return this.id;
     }
@@ -63,11 +52,24 @@ public class People {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "People1{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdTime=" + createdTime +
+                ", friendList=" + friendList +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                '}';
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 500934781)
+    @Generated(hash = 1870429802)
     public List<Friend> getFriendList() {
         if (friendList == null) {
             final DaoSession daoSession = this.daoSession;
@@ -75,7 +77,7 @@ public class People {
                 throw new DaoException("Entity is detached from DAO context");
             }
             FriendDao targetDao = daoSession.getFriendDao();
-            List<Friend> friendListNew = targetDao._queryPeople_FriendList(id);
+            List<Friend> friendListNew = targetDao._queryPeople1_FriendList(id);
             synchronized (this) {
                 if (friendList == null) {
                     friendList = friendListNew;
@@ -123,10 +125,10 @@ public class People {
         myDao.update(this);
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1221105117)
+    @Generated(hash = 65018629)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getPeopleDao() : null;
+        myDao = daoSession != null ? daoSession.getPeople1Dao() : null;
     }
     public Date getCreatedTime() {
         return this.createdTime;

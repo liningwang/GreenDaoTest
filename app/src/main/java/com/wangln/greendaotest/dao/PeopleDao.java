@@ -26,6 +26,7 @@ public class PeopleDao extends AbstractDao<People, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property CreatedTime = new Property(2, java.util.Date.class, "createdTime", false, "CREATED_TIME");
     }
 
     private DaoSession daoSession;
@@ -45,7 +46,8 @@ public class PeopleDao extends AbstractDao<People, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PEOPLE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"NAME\" TEXT);"); // 1: name
+                "\"NAME\" TEXT," + // 1: name
+                "\"CREATED_TIME\" INTEGER);"); // 2: createdTime
     }
 
     /** Drops the underlying database table. */
@@ -67,6 +69,11 @@ public class PeopleDao extends AbstractDao<People, Long> {
         if (name != null) {
             stmt.bindString(2, name);
         }
+ 
+        java.util.Date createdTime = entity.getCreatedTime();
+        if (createdTime != null) {
+            stmt.bindLong(3, createdTime.getTime());
+        }
     }
 
     @Override
@@ -81,6 +88,11 @@ public class PeopleDao extends AbstractDao<People, Long> {
         String name = entity.getName();
         if (name != null) {
             stmt.bindString(2, name);
+        }
+ 
+        java.util.Date createdTime = entity.getCreatedTime();
+        if (createdTime != null) {
+            stmt.bindLong(3, createdTime.getTime());
         }
     }
 
@@ -99,7 +111,8 @@ public class PeopleDao extends AbstractDao<People, Long> {
     public People readEntity(Cursor cursor, int offset) {
         People entity = new People( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // name
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)) // createdTime
         );
         return entity;
     }
@@ -108,6 +121,7 @@ public class PeopleDao extends AbstractDao<People, Long> {
     public void readEntity(Cursor cursor, People entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setCreatedTime(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
      }
     
     @Override

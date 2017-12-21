@@ -9,6 +9,7 @@ import com.wangln.greendaotest.R;
 import com.wangln.greendaotest.dao.FriendDao;
 import com.wangln.greendaotest.dao.OrderWithProductDao;
 import com.wangln.greendaotest.dao.OrdersDao;
+import com.wangln.greendaotest.dao.People1Dao;
 import com.wangln.greendaotest.dao.PeopleDao;
 import com.wangln.greendaotest.dao.PersonDao;
 import com.wangln.greendaotest.dao.ProductDao;
@@ -19,11 +20,15 @@ import com.wangln.greendaotest.relation.manyToMany.Orders;
 import com.wangln.greendaotest.relation.manyToMany.Products;
 import com.wangln.greendaotest.relation.oneToMany.Friend;
 import com.wangln.greendaotest.relation.oneToMany.People;
+import com.wangln.greendaotest.relation.oneToMany.People1;
 import com.wangln.greendaotest.relation.oneToOne.Person;
 import com.wangln.greendaotest.relation.oneToOne.Product;
 import com.wangln.greendaotest.simple.MyApp;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RelationActivity extends AppCompatActivity {
@@ -122,16 +127,56 @@ public class RelationActivity extends AppCompatActivity {
         for (int i = 0; i < 8; i++) {
             Friend friend = new Friend();
             friend.setName("aaa" + i);
-            friend.setPeopleId(10);
+            friend.setPeopleId(12);
             friends.add(friend);
 //            friendDao.insert(friend);
         }
         friendDao.insertInTx(friends);
         People people = new People();
+        people.setCreatedTime(new Date());
         people.setName("wanglining");
-        people.setId((long) 10);
+        people.setId((long) 12);
         peopleDao.insert(people);
 
+    }
+    public void productOneToManyData1(View v) {
+        FriendDao friendDao = ((MyApp)getApplication()).getDaoSession().getFriendDao();
+        People1Dao peopleDao = ((MyApp)getApplication()).getDaoSession()
+                .getPeople1Dao();
+        List<Friend> friends = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            Friend friend = new Friend();
+            friend.setName("bbb" + i);
+            friend.setPeopleId(9);
+            friends.add(friend);
+//            friendDao.insert(friend);
+        }
+        friendDao.insertInTx(friends);
+        People1 people = new People1();
+        people.setCreatedTime(new Date());
+        people.setName("wanglibbb");
+        people.setId((long) 9);
+        peopleDao.insert(people);
+
+    }
+    public void genUnion(View view) {
+        productOneToManyData(null);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        productOneToManyData1(null);
+    }
+    public void doUnion(View view) {
+        People1Dao peopleDao = ((MyApp)getApplication()).getDaoSession()
+                .getPeople1Dao();
+        Query<People1> query = Query.internalCreate(peopleDao,"select * from" +
+                " PEOPLE1 union select * from PEOPLE order by CREATED_TIME " +
+                "ASC",new
+                String[]{});
+        List<People1> people1s = query.list();
+        Log.d("wang","peoples " + people1s.toString());
     }
     public void getOneToManyData(View v) {
         PeopleDao peopleDao = ((MyApp)getApplication()).getDaoSession().getPeopleDao();
