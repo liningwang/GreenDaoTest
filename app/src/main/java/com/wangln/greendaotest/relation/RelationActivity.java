@@ -254,8 +254,7 @@ public class RelationActivity extends AppCompatActivity {
         asyncSession.runInTx(new Runnable() {
             @Override
             public void run() {
-//                mBookDao.insertOrReplaceInTx(bookList);
-//                mBookDao.deleteAll();
+                //操作sql
             }
         },AsyncOperation.FLAG_MERGE_TX);
         //有返回值的异步
@@ -263,8 +262,7 @@ public class RelationActivity extends AppCompatActivity {
         asyncSession.callInTx(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                //                mBookDao.insertOrReplaceInTx(bookList);
-//                mBookDao.deleteAll();
+                //操作sql
                 return null;
             }
         });
